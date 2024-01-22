@@ -23,6 +23,7 @@ pipeline {
 
       stage('Mutation Tests -PIT')  {
         steps {
+           
           sh "mvn org.pitest:pitest-maven:mutationCoverage"
         }
         post {
@@ -34,7 +35,14 @@ pipeline {
 
       stage('SonarQube - SAST') {
         steps {
-          sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://merki.eastus.cloudapp.azure.com:9000 -Dsonar.login=5bb585b115c2f9d2280bef6cb1fead984eb0bf5c"
+          withSonarQubeEnv('Sonarqube') {
+            sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://merki.eastus.cloudapp.azure.com:9000 -Dsonar.login=5bb585b115c2f9d2280bef6cb1fead984eb0bf5c"
+          }
+          timeout(time: 2, unit: 'MINUTES') {
+            script {
+              waitForQualityGate abortPipeline: true
+            }
+          }
         }
       }
 
