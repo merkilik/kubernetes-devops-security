@@ -62,7 +62,9 @@ pipeline {
           }
         }
       }
-      post {
+      
+    }
+  post {
           always {
             dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
             pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
@@ -70,5 +72,4 @@ pipeline {
             jacoco execPattern: 'target/jacoco.exec'
           }
         }
-    }
 }
