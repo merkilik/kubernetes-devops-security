@@ -85,7 +85,7 @@
 					</outputFormats>
 				</configuration>
 			</plugin>
-			<!--                   Dependency Check Pluging                   
+			<!--                   Dependency Check Pluging        -->           
 			<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
@@ -94,7 +94,7 @@
 					<format>ALL</format>
 					<failBuildOnCVSS>5</failBuildOnCVSS>
 				</configuration>
-			</plugin>  -->
+			</plugin>  
 		</plugins>
 	</build>
 
