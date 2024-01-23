@@ -104,4 +104,4 @@ deny[msg] {
 #deny[msg] {
 #    multi_stage == false
 #    msg = sprintf("You COPY, but do not appear to use multi-stage builds...", [])
-}
+#}
