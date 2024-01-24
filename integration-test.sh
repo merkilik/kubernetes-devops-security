@@ -8,9 +8,9 @@ echo $applicationURL:$PORT/$applicationURI
 if [[ ! -z "$PORT" ]];
 then
 
-    response=$(curl -s $applicationURL:$PORT$apllicationURI)
+    response=$(curl -s $applicationURL:$PORT$applicationURI)
     http_code=$(curl -s -o /dev/null -w "%{http_code}" $applicationURL:$PORT$applicationURI)
-    
+
     if [[ "$response" == 100 ]];
         then
             echo "Increment Test Passed"
@@ -23,10 +23,11 @@ then
         then
             echo "HTTP Status Code Test Passed"
         else
-            echo "HTTP Status code is not 200 "
+            echo "HTTP Status code is not 200"
             exit 1;
     fi;
-else:
+
+else
         echo "The Service does not have a NodePort"
         exit 1;
 fi;
