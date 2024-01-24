@@ -2,8 +2,8 @@ sleep 5s
 
 PORT=$(kubectl -n default get svc ${serviceName} -o json | jq .spec.ports[].nodePort)
 
-$PORT
-$applicationURL:$PORT/$applicationURI
+echo $PORT
+echo $applicationURL:$PORT/$applicationURI
 
 if [[ ! -z "$PORT" ]];
 then
@@ -26,6 +26,7 @@ then
             echo "HTTP Status code is not 200 "
             exit 1;
     fi;
-
+else:
         echo "The Service does not have a NodePort"
         exit 1;
+fi;
