@@ -21,10 +21,10 @@ spec:
       serviceAccountName: default
       containers:
       - image: replace
+        name: devsecops-container
         volumeMounts:
         - mountPath: /tmp
           name: vol
-        name: devsecops-container
         securityContext:
           runAsNonRoot: true
           runAsUser: 100
