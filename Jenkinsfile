@@ -1,3 +1,5 @@
+@Library('slack') _
+
 pipeline {
   agent any
 
@@ -154,6 +156,7 @@ pipeline {
             junit 'target/surefire-reports/*.xml'
             jacoco execPattern: 'target/jacoco.exec'
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
+            sendNotification currentBuild.result
           }
         }
 }
