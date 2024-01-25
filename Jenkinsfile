@@ -155,7 +155,7 @@ pipeline {
         }
       }
 
-    }
+    
   post {
           always {
             // dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
@@ -166,4 +166,4 @@ pipeline {
             sendNotification currentBuild.result
           }
         }
-  }
+}  
