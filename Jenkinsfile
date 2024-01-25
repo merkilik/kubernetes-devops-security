@@ -12,7 +12,7 @@ pipeline {
     applicationURI = "/increment/99"
   }
 
-  // stages {
+  stages {
   //     stage('Build Artifact') {
   //           steps {
   //             sh "mvn clean package -DskipTests=true"
