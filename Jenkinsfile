@@ -1,5 +1,39 @@
 @Library('slack') _
 
+import io.jenkins.blueocean.rest.impl.pipeline.PipelineNodeGraphVisitor
+import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
+import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper
+import org.jenkinsci.plugins.workflow.actions.ErrorAction
+
+@NonCPS
+List < Map > getStageResults(RunWrapper build) {
+  def visitor =new PipelineNodeGraphVisitor(build.rawBuild)
+  def stages = visitor.pipelineNodes.findAll {
+    it.type == FlowNodeWrapper.NodeType.STAGE
+  }
+
+  return stages.collect {
+    stage ->
+      def errorActions = stage.getPipelinteActions(ErrorAction)
+    def errors = errorActions?.collect {
+      it.error
+    }.unique()
+
+    return [
+      id: stage.id,
+      failedStageName: stage.displayName,
+      result: "${stage.status.result}",
+      errors: errors
+  }
+}
+
+@NonCPS
+List < Map > getFailedStages(RunWrapper build) {
+  return getStageResults(build).findAll {
+    it.result == "FAILURE"
+  }
+}  
+
 pipeline {
   agent any
 
@@ -215,7 +249,7 @@ pipeline {
 
       stage('Testing Slack') {
         steps {
-            sh 'exit 0'
+            sh 'exit 1'
           }
         }
     }
@@ -236,6 +270,15 @@ pipeline {
               /* Use slackNotifier.groovy from shared library and provide current build result as parameter */
               env.failedStage = "none"
               env.emoji = ":white_check_mark: :tada: :thumbsup_all:"
+              sendNotification currentBuild.result
+            }
+          }
+
+          failure {
+            script {
+              def failedStages = getFailedStages(currentBuild)
+              env.failedStage = failedStages.failedStageName
+              env.emoji = ":x: :red_circle: :sos:"
               sendNotification currentBuild.result
             }
           }
