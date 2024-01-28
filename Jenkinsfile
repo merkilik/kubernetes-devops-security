@@ -5,16 +5,22 @@ import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
 import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper
 import org.jenkinsci.plugins.workflow.actions.ErrorAction
 
+// Get information about all stages, including the failure cases
+// Returns a list of maps: [[id, failedStageName, result, errors]]
 @NonCPS
 List < Map > getStageResults(RunWrapper build) {
-  def visitor =new PipelineNodeGraphVisitor(build.rawBuild)
+
+  // Get all pipeline nodes that represent stages
+  def visitor = new PipelineNodeGraphVisitor(build.rawBuild)
   def stages = visitor.pipelineNodes.findAll {
     it.type == FlowNodeWrapper.NodeType.STAGE
   }
 
   return stages.collect {
     stage ->
-      def errorActions = stage.getPipelinteActions(ErrorAction)
+
+      // Get all the errors from the stage
+      def errorActions = stage.getPipelineActions(ErrorAction)
     def errors = errorActions?.collect {
       it.error
     }.unique()
@@ -28,12 +34,13 @@ List < Map > getStageResults(RunWrapper build) {
   }
 }
 
+// Get information of all failed stages
 @NonCPS
 List < Map > getFailedStages(RunWrapper build) {
   return getStageResults(build).findAll {
-    it.result == "FAILURE"
+    it.result == 'FAILURE'
   }
-}  
+}
 
 pipeline {
   agent any
