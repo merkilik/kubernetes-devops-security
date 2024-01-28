@@ -24,6 +24,7 @@ List < Map > getStageResults(RunWrapper build) {
       failedStageName: stage.displayName,
       result: "${stage.status.result}",
       errors: errors
+    ]
   }
 }
 
