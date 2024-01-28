@@ -222,14 +222,14 @@ pipeline {
 
     
   post {
-          always {
-            dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-            pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
-            junit 'target/surefire-reports/*.xml'
-            jacoco execPattern: 'target/jacoco.exec'
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
-            // sendNotification currentBuild.result
-          }
+          // always {
+          //   dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+          //   pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+          //   junit 'target/surefire-reports/*.xml'
+          //   jacoco execPattern: 'target/jacoco.exec'
+          //   publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
+          //   // sendNotification currentBuild.result
+          // }
 
           success {
             script {
